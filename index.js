@@ -167,8 +167,10 @@ render()
 function onClick(e) {
   const r = e.target.dataset.r;
   const c = e.target.dataset.c;
-  boardState[r][c] = 'X';
-  boardState = cleverAI(boardState, '0');
+  if (winState(boardState) === null) {
+    boardState[r][c] = 'X';
+    boardState = cleverAI(boardState, '0');
+  }
   render();
 
   if (win('X', boardState)) console.log('X win!');
@@ -179,7 +181,9 @@ function render() {
   const squares = document.querySelector('.board').querySelectorAll('div');
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
-      squares[i * 3 + j].innerText = boardState[i][j]
+      const e = boardState[i][j];
+      squares[i * 3 + j].innerText = e;
+      squares[i * 3 + j].style.color = e === 'X' ? 'red' : 'blue';
     }
   }
 }
